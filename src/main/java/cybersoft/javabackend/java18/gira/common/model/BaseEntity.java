@@ -24,6 +24,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @SuperBuilder
+@NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class BaseEntity implements Serializable {
     // Create column variables using annotations
