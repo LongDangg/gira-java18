@@ -60,6 +60,11 @@ public class BaseEntity implements Serializable {
     @Column(name=Columns.LAST_MODIFIED_AT)
     protected LocalDateTime lastModifiedAt;
 
+    @Override
+    public boolean equals(Object obj){
+        return this.id.equals(((BaseEntity)obj).id);
+    }
+
     // Utility class to store database column names
     @UtilityClass
     static class Columns{
