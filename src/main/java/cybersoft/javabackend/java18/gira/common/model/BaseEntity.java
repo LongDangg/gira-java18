@@ -20,66 +20,56 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@MappedSuperclass
 @Getter
 @Setter
-@SuperBuilder
 @NoArgsConstructor
+@SuperBuilder
+@MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public class BaseEntity implements Serializable {
-    // Create column variables using annotations
     @Id
-    @Type(type="uuid-char") // Declare the typing of variable under database (id will have type char in database)
-    @GeneratedValue // Generate random value of type UUID (or other types if applied) for id
-    @Column(name="ID") // Declare and map database column/field "ID" to variable id
+    @Type(type = "uuid-char")
+    @GeneratedValue
+    @Column(name = Columns.ID)
     protected UUID id;
 
-    @Version // Add this annotation for version field
-    @Column(name=Columns.VERSION)
+    @Version
+    @Column(name = Columns.VERSION)
     protected int version;
 
     @CreatedBy
-    @Column(name=Columns.CREATED_BY)
+    @Column(name = Columns.CREATED_BY)
     protected String createdBy;
 
-    // Specify typing and date time format for Json response data
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern=DateTimeUtils.DATETIME_FORMAT)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateTimeUtils.DATETIME_FORMAT)
+    @DateTimeFormat(pattern = DateTimeUtils.DATETIME_FORMAT)
     @CreatedDate
-    // Specify date time format for createdAt variable
-    @DateTimeFormat(pattern= DateTimeUtils.DATETIME_FORMAT)
-    @Column(name=Columns.CREATED_AT)
+    @Column(name = Columns.CREATED_AT)
     protected LocalDateTime createdAt;
 
     @LastModifiedBy
-    @Column(name=Columns.LAST_MODIFIED_BY)
+    @Column(name = Columns.LAST_MODIFIED_BY)
     protected String lastModifiedBy;
 
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern=DateTimeUtils.DATETIME_FORMAT)
-    @DateTimeFormat(pattern= DateTimeUtils.DATETIME_FORMAT)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateTimeUtils.DATETIME_FORMAT)
+    @DateTimeFormat(pattern = DateTimeUtils.DATETIME_FORMAT)
     @LastModifiedDate
-    @Column(name=Columns.LAST_MODIFIED_AT)
+    @Column(name = Columns.LAST_MODIFIED_AT)
     protected LocalDateTime lastModifiedAt;
 
     @Override
-    public boolean equals(Object obj){
-        return this.id.equals(((BaseEntity)obj).id);
+    public boolean equals(Object obj) {
+        return this.id.equals(((BaseEntity) obj).id);
     }
 
-    // Utility class to store database column names
+    // inner class
     @UtilityClass
-    static class Columns{
+    static class Columns {
         static final String ID = "ID";
-
         static final String VERSION = "VERSION";
-
         static final String CREATED_BY = "CREATED_BY";
-
         static final String CREATED_AT = "CREATED_AT";
-
         static final String LAST_MODIFIED_BY = "LAST_MODIFIED_BY";
-
         static final String LAST_MODIFIED_AT = "LAST_MODIFIED_AT";
     }
-
-
 }
