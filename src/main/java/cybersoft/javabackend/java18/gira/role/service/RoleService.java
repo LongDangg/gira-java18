@@ -15,6 +15,8 @@ import java.util.UUID;
 public interface RoleService extends GenericService<Role, RoleDTO, UUID> {
     Role update(Role role, String code);
     void deleteByCode(String code);
+
+    RoleDTO save(RoleDTO dto);
 }
 
 @Service
@@ -46,6 +48,13 @@ class RoleServiceImpl implements RoleService {
     @Override
     public void deleteByCode(String code) {
         repository.deleteByCode(code);
+    }
+
+    @Override
+    public RoleDTO save(RoleDTO dto) {
+        Role model = mapper.map(dto, Role.class);
+        Role saveModel = repository.save(model);
+        return mapper.map(saveModel, RoleDTO.class);
     }
 
     @Override
