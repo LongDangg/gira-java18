@@ -11,8 +11,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.ConstraintViolationException;
 
-@RestControllerAdvice // This is the class used to handle ALL exceptions
+@RestControllerAdvice
 public class GlobalExceptionHandler {
+
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ResponseDTO> handleConstraintViolationException(
@@ -24,17 +25,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ResponseDTO> handleMethodArgumentNotValidException(
-            ConstraintViolationException exception
+            MethodArgumentNotValidException exception
     ){
         return ResponseUtils.error(exception, HttpStatus.BAD_REQUEST);
     }
 
 //    @ExceptionHandler(RuntimeException.class)
 //    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    public ResponseEntity<ResponseDTO> handleConstraintViolationException(
+//    public ResponseEntity<ResponseDTO> handleGlobalException(
 //            RuntimeException exception
 //    ){
 //        return ResponseUtils.error(exception, HttpStatus.BAD_REQUEST);
 //    }
-
 }

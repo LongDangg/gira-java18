@@ -9,7 +9,6 @@ import java.util.UUID;
 
 @Repository
 public interface RoleRepository extends JpaRepository<Role, UUID> {
-
     Role findByCode(String code);
 
     void deleteByCode(String code);

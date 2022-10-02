@@ -8,28 +8,30 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.Optional;
 
-public class UniqueRoleNameValidator implements ConstraintValidator<UniqueRoleName, String> {
-
+public class UniqueRoleNameValidator
+        implements ConstraintValidator<UniqueRoleName, String> {
     private String message;
-    private RoleRepository repository;
+    private final RoleRepository repository;
 
-    public UniqueRoleNameValidator(RoleRepository repository){
-        this.repository=repository;
+    public UniqueRoleNameValidator(RoleRepository roleRepository){
+        this.repository = roleRepository;
     }
+
     @Override
-    public boolean isValid(String name, ConstraintValidatorContext constraintValidatorContext) {
-        Optional<Role> roleOptional = repository.findByName(name);
-        if(roleOptional.isEmpty()){
+    public void initialize(UniqueRoleName constraintAnnotation) {
+       message = constraintAnnotation.message();
+    }
+
+    @Override
+    public boolean isValid(String name, ConstraintValidatorContext context) {
+        Optional<Role> roleOpt = repository.findByName(name);
+
+        if(roleOpt.isEmpty())
             return true;
-        }
-        constraintValidatorContext.buildConstraintViolationWithTemplate(message)
+
+        context.buildConstraintViolationWithTemplate(message)
                 .addConstraintViolation()
                 .disableDefaultConstraintViolation();
         return false;
-    }
-
-    @Override
-    public void initialize(UniqueRoleName constraintAnnotation){
-        message = constraintAnnotation.message();
     }
 }
